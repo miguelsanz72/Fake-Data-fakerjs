@@ -1,16 +1,33 @@
-const faker = require('faker');
+const faker = require("faker/locale/es");
+const fs = require("fs");
+function generateUsers() {
+  let users = [];
+  for (let id = 1; id <= 100; id++) {
+    const firstName = faker.name.firstName();
+    const lastName = faker.name.lastName();
+    const jobTitle = faker.name.jobTitle();
+    const prefix = faker.name.prefix();
+    const sufix = faker.name.suffix();
+    const jobArea = faker.name.jobArea();
+    const email = faker.internet.email();
+    const phone = faker.phone.phoneNumber();
 
-const firstName = faker.name.firstName();
-const lastName = faker.name.lastName();
+    users.push({
+      id: id,
+      firstName,
+      lastName,
+      jobTitle,
+      prefix,
+      sufix,
+      jobArea,
+      email,
+      phone,
+    });
+  }
 
-const jobTitle = faker.name.jobTitle();
-const prefix = faker.name.prefix();
-const sufix = faker.name.suffix();
-const jobArea = faker.name.jobArea();
+  return { data: users };
+}
 
-const phone = faker.phone.phoneNumber();
+const generatedData = generateUsers();
 
-console.log(`Employee: ${prefix} ${firstName} ${lastName} ${sufix}`)
-console.log(`Job Title: ${jobTitle}`);
-console.log(`JobArea: ${jobArea}`);
-console.log(`Phone: ${phone}`);
+fs.writeFileSync("users.json", JSON.stringify(generatedData, null, "\t"));
